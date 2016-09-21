@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="user-management" default="makejar" basedir=".">
+	<target name ="makejar" description="Create a jar for the user-management project">
+		<jar jarfile="build/CassandraPlus.jar" includes="**/*.class" excludes=""
+    		basedir="bin/" compress="true" whenmanifestonly="fail">
+			<!--<zipgroupfileset dir="lib" includes="*.jar"/>-->
+			<manifest>
+				<attribute name="Main-Class" value="${main.class}"/>
+				<attribute name="Class-Path" value="${mf.classpath}"/>
+			</manifest>
+		</jar>
+
+		<copy file="build/CassandraPlus.jar" todir="***CASSANDRA_HOME***/build/classes/main/triggers/"/>
+
+		<path id="build.classpath">
+			<fileset dir="${basedir}/">
+				<include name="lib/*.jar"/>
+				<include name="lib/turn/*.jar"/>
+			</fileset>
+		</path>
+
+		<pathconvert property="mf.classpath" pathsep=" ">
+			<path refid="build.classpath"/>
+			<mapper>
+				<chainedmapper>
+					<flattenmapper/>
+					<globmapper from="*.jar" to="lib/*.jar"/>
+				</chainedmapper>
+			</mapper>
+		</pathconvert>
+
+	</target>
+</project>
